@@ -1,4 +1,4 @@
-name: CI
+name: Master
 
 on: [push]
 
@@ -8,7 +8,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
 
     steps:
     - uses: actions/checkout@v1
@@ -21,3 +22,26 @@ jobs:
       run: |
         cd build
         cmake --build . -j 8
+  unittest:
+    needs: build
+    name: Build and run unittests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: prepare
+      run: |
+        mkdir -p build
+        cd build
+        cmake -Dunittests=ON ..
+    - name: build
+      run: |
+        cd build
+        cmake --build . -j 8
+    - name: test
+      run: |
+        cd build
+        ctest . -j 8
