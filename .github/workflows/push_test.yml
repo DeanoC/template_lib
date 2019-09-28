@@ -25,5 +25,5 @@ jobs:
     - name: test
       run: |
         cd build
-        ctest . -j 8 -C Release 
+        ctest . -j 8 -C Release -V
        
