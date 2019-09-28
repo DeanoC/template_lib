@@ -20,4 +20,4 @@ jobs:
     - name: build
       run: |
         cd build
-        cmake --build .
+        cmake --build . -j 8
