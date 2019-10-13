@@ -15,26 +15,21 @@ if(NOT hasParent)
 endif ()
 
 SET_MIN_VERSIONS()
-set(LibName test)
+set(LibName template_lib)
 project(${LibName})
 
-set(Interface
-		)
-
-set(Src
-		)
-
+file(GLOB_RECURSE Src CONFIGURE_DEPENDS include/*.h include/*.hpp src/*.c src/*.cpp)
 set(Deps
-    al2o3_platform
-		)
-ADD_LIB(${LibName} "${Interface}" "${Src}" "${Deps}")
+    	al2o3_platform
+	al2o3_memory
+	al2o3_thread
+)
 
-set( Tests
-		runner.cpp
-		)
+ADD_LIB2(${LibName} "${Src}" "${Deps}")
+
+file( GLOB_RECURSE Tests CONFIGURE_DEPENDS tests/*.cpp )
+
 set( TestDeps
 		al2o3_catch2
-
 		utils_simple_logmanager)
-ADD_LIB_TESTS(${LibName} "${Interface}" "${Tests}" "${TestDeps}")
-
+ADD_LIB2_TESTS(${LibName} "${Tests}" "${TestDeps}")
